@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capital Dossier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" class="style">
+</head>
+
+<body>
+    <header class="sticky-header">
+        <div class="logo-container">
+            <img src="images/logo-white.png" alt="Capital Dossier" class="logo" />
+        </div>
+        <div>Capital Dossier</div>
+        <nav>
+            <a onclick="showPage('home')">Home</a>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active-page">
+        <div class="hero">
+            <h1>Capital Dossier</h1>
+            <p>Deep insights into equity markets and financial analysis</p>
+        </div>
+
+        <div class="section">
+            <h2>Categories</h2>
+            <div class="categories">
+                <div class="category">Equity Research</div>
+                <div class="category">Market Trends</div>
+                <div class="category">Risk Analysis</div>
+                <div class="category">AI in Finance</div>
+            </div>
+        </div>
+
+        <div class="section featured-articles">
+            <h2>Featured Articles</h2>
+            <div class="cards">
+                <div class="card" onclick="window.location.href='blogs/market-trends.html'">
+                    <h3>Understanding Market Trends</h3>
+                    <p>A deep dive into current macroeconomic signals and investor behavior.</p>
+                    <div class="explore">Read →</div>
+                </div>
+
+                <div class="card" onclick="window.location.href='blogs/equity-valuation.html'">
+                    <h3>Equity Valuation Basics</h3>
+                    <p>Learn how analysts determine the fair value of stocks.</p>
+                    <div class="explore">Read →</div>
+                </div>
+
+                <div class="card" onclick="window.location.href='blogs/risk-analysis.html'">
+                    <h3>Risk in Emerging Markets</h3>
+                    <p>Exploring volatility and opportunities in developing economies.</p>
+                    <div class="explore">Read →</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Capital Dossier. All rights reserved.</p>
+        <div class="logo-container">
+            <img src="images/logo-white.png" alt="Capital Dossier" class="logo" />
+        </div>
+    </footer>
+
+    <script>
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(page).classList.add('active-page');
+        }
+
+        // TOC
+        const headings = document.querySelectorAll(".content h2");
+        const toc = document.getElementById("toc");
+
+        headings.forEach(h => {
+            const a = document.createElement("a");
+            a.href = "#" + h.parentElement.id;
+            a.textContent = h.textContent;
+            toc.appendChild(a);
+        });
+
+        // Scroll spy
+        window.addEventListener("scroll", () => {
+            let current = "";
+
+            headings.forEach(h => {
+                const section = document.getElementById(h.parentElement.id);
+                const top = section.offsetTop - 100;
+                if (scrollY >= top) current = section.id;
+            });
+
+            document.querySelectorAll(".toc a").forEach(a => {
+                a.classList.remove("active");
+                if (a.getAttribute("href") === "#" + current) {
+                    a.classList.add("active");
+                }
+            });
+
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("progressBar").style.width = (winScroll / height) * 100 + "%";
+        });
+
+        // Read aloud
+        let speaking = false;
+        function toggleRead() {
+            if (!speaking) {
+                const text = document.getElementById("content").innerText;
+                const utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+                speaking = true;
+            } else {
+                speechSynthesis.cancel();
+                speaking = false;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
